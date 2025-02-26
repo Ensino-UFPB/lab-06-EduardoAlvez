@@ -222,25 +222,3 @@ function validaInstagram(input) {
     input.setCustomValidity(mensagem);
 }
 
-const precoInput = document.getElementById("preco")
-
-const optionsBRL = {
-    afterFormat(e) { console.log('afterFormat', e); },
-    allowNegative: false,
-    beforeFormat(e) { console.log('beforeFormat', e); },
-    negativeSignAfter: false,
-    prefix: 'R$',
-    suffix: '',
-    fixed: true,
-    fractionDigits: 2,
-    decimalSeparator: ',',
-    thousandsSeparator: '.',
-    cursor: 'end'
-  };
-
-  SimpleMaskMoney.setMask(precoInput, optionsBRL);
-
-  inputValor.addEventListener("input", () => {
-    console.log(SimpleMaskMoney.formatToNumber(precoInput.value)); 
-});
-
