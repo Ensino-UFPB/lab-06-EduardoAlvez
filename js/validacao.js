@@ -39,7 +39,7 @@ const mensagensDeErro = {
     },
     cpf: {
         valueMissing: 'O campo de CPF não pode estar vazio.',
-        customError: 'O CPF digitado não é válido.' 
+        customError: 'O CPF digitado não é válidoAqui.' 
     },
     cep: {
         valueMissing: 'O campo de CEP não pode estar vazio.',
@@ -54,13 +54,26 @@ const mensagensDeErro = {
     },
     estado: {
         valueMissing: 'O campo de estado não pode estar vazio.'
+    },
+    telefone: {
+        valueMissing: 'O campo de estado não pode estar vazio.',
+        patternMismatch: 'TESTE TELEFONE',
+        customError: 'TESTE CUSTOM'
+    },
+    instagram: {
+        valueMissing: 'O campo de estado não pode estar vazio.',
+        patternMismatch: 'TESTE INSTA',
+        customError: 'TESTE CUSTOM INSTA'
     }
 }
+
+
 
 const validadores = {
     dataNascimento:input => validaDataNascimento(input),
     cpf:input => validaCPF(input),
-    cep:input => recuperarCEP(input)
+    cep:input => recuperarCEP(input),
+    instagram:input => validaInstagram(input)
 }
 
 function mostraMensagemDeErro(tipoDeInput, input) {
@@ -97,7 +110,7 @@ function validaCPF(input) {
     let mensagem = ''
 
     if(!checaCPFRepetido(cpfFormatado) || !checaEstruturaCPF(cpfFormatado)) {
-        mensagem = 'O CPF digitado não é válido.'
+        mensagem = 'O CPF digitado não é válidoOU.'
     }
 
     input.setCustomValidity(mensagem)
@@ -195,3 +208,39 @@ function preencheCamposComCEP(data) {
     cidade.value = data.localidade
     estado.value = data.uf
 }
+
+function validaInstagram(input) {
+    const regexInstagram = "/^@\w{1,30}$/";
+    let mensagem = '';
+
+    if (!input.value.trim()) {
+        mensagem = mensagensDeErro.instagram.valueMissing;
+    } else if (!regexInstagram.test(input.value)) {
+        mensagem = mensagensDeErro.instagram.patternMismatch;
+    }
+
+    input.setCustomValidity(mensagem);
+}
+
+const precoInput = document.getElementById("preco")
+
+const optionsBRL = {
+    afterFormat(e) { console.log('afterFormat', e); },
+    allowNegative: false,
+    beforeFormat(e) { console.log('beforeFormat', e); },
+    negativeSignAfter: false,
+    prefix: 'R$',
+    suffix: '',
+    fixed: true,
+    fractionDigits: 2,
+    decimalSeparator: ',',
+    thousandsSeparator: '.',
+    cursor: 'end'
+  };
+
+  SimpleMaskMoney.setMask(precoInput, optionsBRL);
+
+  inputValor.addEventListener("input", () => {
+    console.log(SimpleMaskMoney.formatToNumber(precoInput.value)); 
+});
+
